@@ -6,18 +6,20 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        span = soup.find('span', class_= 'item-price')
+        div = soup.find('div', {'title': 'buyer-info'})
 
-        print(span.parent)
-        print(span.parent.parent.name) # seria la etiqueta 'abuelo' -> body
-        print(span.parent.parent.parent.name) # seria la etiqueta 'bisabuelo' -> html
-        print(span.parent.parent.parent.parent.name) # seria la etiqueta 'tatarabuelo' -> document
-        print(span.parent.parent.parent.parent.parent) # no existe padre -> None 
+        # * Para acceder a los valores de cada elemento se debe aplicar como si fuera un diccionario
+        print(div['title'])
 
-        
-        # * todos los padres de una etiqueta
-        for parent in span.parents:
-            print (parent.name) # div body html [document]
+        # * como en un diccionario se puede acceder al valor del key mediante el metodo get
+        # que permite un valor por defecto en caso de no encontrar el key
 
-        for child in span.descendants:
-            print(child.name) # None
+        print(div.get('titles', 'valor por default'))
+
+        div['id'] = 'item01'
+        div['title'] = 'nuevo-titulo' # sobreescribe el valor del atributo title
+        div.div.string = 'valor modificado'
+        div.span.string = '$1000.50'
+ 
+        print(div)
+        print(soup.prettify)
