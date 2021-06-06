@@ -1,17 +1,10 @@
-import requests
-import re
+from bs4 import BeautifulSoup
 
-URL = 'http://econpy.pythonanywhere.com/ex/001.html'
+if __name__ == '__main__':
+    with open('econpy.html', 'r') as file:
+        content = file.read()
 
-
-with open('econpy.html', 'r') as file:
-    # es recomendable evitar muchas peticiones al servidor. 
-    # Por ende es buena idea leer un archivo local de los datos de la web
-    
-    content = file.read()
-    
-    regex = '<div title="buyer-name">(.+?)</div>'
-
-    for title in re.findall(regex, content):
-        print(title)
-        
+        soup = BeautifulSoup(content, 'html.parser')
+        # print(soup.prettify())
+        print(soup.head)
+        print(type(soup.head)) # objeto del tipo Tag
