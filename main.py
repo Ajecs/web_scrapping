@@ -4,11 +4,11 @@ import re
 URL = 'http://econpy.pythonanywhere.com/ex/001.html'
 
 
-if __name__ == '__main__':
-    response = requests.get(URL)
-
-    if response.status_code == 200:
-        content = response.text 
+with open('econpy.html', 'r') as file:
+    # es recomendable evitar muchas peticiones al servidor. 
+    # Por ende es buena idea leer un archivo local de los datos de la web
+    
+    content = file.read()
     
     regex = '<div title="buyer-name">(.+?)</div>'
 
