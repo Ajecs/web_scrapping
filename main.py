@@ -6,10 +6,16 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        # * OPCION 1
-        # for element in soup.find_all(attrs={'class': 'item-price'}):
+        div = soup.find('div', {'title': 'buyer-info'})
 
-        # * OPCION 2
-        for element in soup.find_all(class_='item-price'):
-            # ! de no existir clase no aparece nada. Debe el mismo orden que la etiqueta
-            print(element.text)
+        for child in div.children:
+            # * el atributo children devuelve un iterador
+            print(child)
+
+        # print(div.contents) 
+        #  * El atributo content devuelve una lista que contiene todos los nodos hijos
+
+        # div_item = div.contents[1]
+        # span_item = div.contents[3]
+
+        # print(div_item.text, span_item.text)
