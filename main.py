@@ -6,15 +6,18 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        div = soup.find('div', string='Carson Busses')
+        span = soup.find('span', class_= 'item-price')
 
-        # * next_sibling
+        print(span.parent)
+        print(span.parent.parent.name) # seria la etiqueta 'abuelo' -> body
+        print(span.parent.parent.parent.name) # seria la etiqueta 'bisabuelo' -> html
+        print(span.parent.parent.parent.parent.name) # seria la etiqueta 'tatarabuelo' -> document
+        print(span.parent.parent.parent.parent.parent) # no existe padre -> None 
 
-        # * previous_sibling
-        print(div.next_sibling)  # el nodo "\n"
-        print(div.next_sibling.next_sibling)  # el nodo "span"
-        print(div.previous_sibling)  # de nuevo a \n
+        
+        # * todos los padres de una etiqueta
+        for parent in span.parents:
+            print (parent.name) # div body html [document]
 
-        for element in div.previous_siblings:
-            # devuelve un iterador (generator)
-            print(element)
+        for child in span.descendants:
+            print(child.name) # None
