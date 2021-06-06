@@ -6,8 +6,10 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        for element in soup.find_all('div', {'title': 'buyer-info'}):
-            div = element.div
-            span = element.span
-            # En caso de no encontrarse el elemento se devuelve none
-            print(div.text, span.text) #
+        # * OPCION 1
+        # for element in soup.find_all(attrs={'class': 'item-price'}):
+
+        # * OPCION 2
+        for element in soup.find_all(class_='item-price'):
+            # ! de no existir clase no aparece nada. Debe el mismo orden que la etiqueta
+            print(element.text)
