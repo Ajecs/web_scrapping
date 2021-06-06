@@ -6,16 +6,15 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        div = soup.find('div', {'title': 'buyer-info'})
+        div = soup.find('div', string='Carson Busses')
 
-        for child in div.children:
-            # * el atributo children devuelve un iterador
-            print(child)
+        # * next_sibling
 
-        # print(div.contents) 
-        #  * El atributo content devuelve una lista que contiene todos los nodos hijos
+        # * previous_sibling
+        print(div.next_sibling)  # el nodo "\n"
+        print(div.next_sibling.next_sibling)  # el nodo "span"
+        print(div.previous_sibling)  # de nuevo a \n
 
-        # div_item = div.contents[1]
-        # span_item = div.contents[3]
-
-        # print(div_item.text, span_item.text)
+        for element in div.previous_siblings:
+            # devuelve un iterador (generator)
+            print(element)
