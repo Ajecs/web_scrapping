@@ -6,16 +6,16 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        a = soup.new_tag('a', href='www.google.com', target='_blank')
-        a.string = 'Google'
-        div = soup.new_tag('div', id='item01', title='item-data')
-        div['new-attrs'] = 'new-attrs'
-        div.append('\n')
-        div.append(a)
-        div.append('\n')
+        div = soup.find('div', {'title': 'buyer-info'})
 
-        # soup.body.append(div)
-        soup.body.insert(1, div) # coloca en la posicion 1 de la lista contents
+        # div.contents = []
+        # a contents tambien se lo puede escribir.
 
-        print(soup.prettify) 
-        # lo añade al final del body
+        div.div.string = '' # elimina el texto busses carson
+
+        # * Se puede extraer un elemento 
+
+        span = div.span.extract()
+
+        print(div)
+        print(span)
