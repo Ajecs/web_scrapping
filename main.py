@@ -7,10 +7,18 @@ if __name__ == '__main__':
     response = requests.get(URL)
 
     if response.status_code == 200:
-        content = response.text # devuelve un string
+        content = response.text 
+        # <div title="buyer-name">Carson Busses</div>
+        regexa = '<div title="buyer-name">'
+        regexb = '</div>'
 
-        # print(content)
+        for line in content.split('\n'):
+            if regexa in line:
+                # print(line)
+                start = line.find(regexa) + len(regexa)
+                end = line.find(regexb)
+                title = line[start:end]
 
-        # generar archivo local
-        with open('econpy.html', 'w+') as file:
-            file.write(content)
+                print(title)
+
+        
