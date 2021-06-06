@@ -6,10 +6,5 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
         
-        title = soup.find('title')
-        
-        print(title)
-        print(title.name)
-
-        print(title.text)
-        print(title.get_text()) # igual que text
+        for element in soup.find_all('div'):
+           print(element, '\n')
