@@ -5,6 +5,11 @@ if __name__ == '__main__':
         content = file.read()
 
         soup = BeautifulSoup(content, 'html.parser')
-        # print(soup.prettify())
-        print(soup.head)
-        print(type(soup.head)) # objeto del tipo Tag
+        
+        title = soup.find('title')
+        
+        print(title)
+        print(title.name)
+
+        print(title.text)
+        print(title.get_text()) # igual que text
