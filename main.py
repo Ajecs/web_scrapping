@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        now = datetime.now().strftime('%d_%m_%Y')
+        now = datetime.now().strftime('%d_%m_%Y %H_%M')
 
     with open(f'news/news_{now}.txt', 'w+') as file:
         for element in soup.find_all('h3', class_='ipQwMb ekueJc RD0gLb', limit=20):
@@ -22,3 +22,6 @@ if __name__ == '__main__':
             file.write(title + '\n')
 
     print('Archivo generado de forma exitosa')
+
+# Para poder realizar la tarea todos los dias se utiliza Cron
+
