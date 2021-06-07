@@ -4,30 +4,63 @@ from bs4 import BeautifulSoup
 DOMAIN = 'https://pokemondb.net/'
 URL = '/pokedex/all'
 
-if __name__ == '__main__':
-    response = requests.get(DOMAIN + URL)
+# funcion para la peticion y la creacion del objeto soup
+
+
+def get_content(url):
+    response = requests.get(url)
+
     if response.status_code == 200:
         content = response.text
 
         soup = BeautifulSoup(content, 'html.parser')
+        return soup
+    else:
+        return None
 
-        table = soup.find('table', {'id': 'pokedex'})
-        for row in table.tbody.find_all('tr', limit=5):
-            columns = row.find_all('td', limit=3)  # limite de nodos a obtener
 
-            name = columns[1].a.text
-            type = [a.text for a in columns[2].find_all('a')]
-            
+def get_species_pokemon(url):
+    soup = get_content(url)
 
-            link = DOMAIN + columns[1].a['href']
+    table = soup.find(
+        'table', class_='vitals-table')
 
-            pokemon_response = requests.get(link)
-            if pokemon_response.status_code == 200:
-                pokemon_content = pokemon_response.text
+    species = table.tbody.find_all('tr')[2].td.text
 
-                pokemon_soup = BeautifulSoup(pokemon_content, 'html.parser')
-                pokemon_table = pokemon_soup.find('table', class_='vitals-table')
+    return species
 
-                species = pokemon_table.tbody.find_all('tr')[2].td.text
-                
-                print(name, '|', *type, '|', species)
+
+def show_pokemon_data():
+    soup = get_content(DOMAIN + URL)
+
+    soup = BeautifulSoup(content, 'html.parser')
+
+    table = soup.find('table', {'id': 'pokedex'})
+
+    for row in table.tbody.find_all('tr', limit=5):
+        columns = row.find_all('td', limit=3)  # limite de nodos a obtener
+
+        name = columns[1].a.text
+        type = [a.text for a in columns[2].find_all('a')]
+        link = DOMAIN + columns[1].a['href']
+
+        species = get_species_pokemon(link)
+
+        print(name, '|', *type, '|', species)
+
+
+if __name__ == '__main__':
+    soup = get_content(DOMAIN + URL)
+
+    table = soup.find('table', {'id': 'pokedex'})
+
+    for row in table.tbody.find_all('tr', limit=5):
+        columns = row.find_all('td', limit=3)  # limite de nodos a obtener
+
+        name = columns[1].a.text
+        type = [a.text for a in columns[2].find_all('a')]
+        link = DOMAIN + columns[1].a['href']
+
+        species = get_species_pokemon(link)
+
+        print(name, '|', *type, '|', species)
