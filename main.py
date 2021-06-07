@@ -1,66 +1,24 @@
 import requests
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 DOMAIN = 'https://pokemondb.net/'
-URL = '/pokedex/all'
-
-# funcion para la peticion y la creacion del objeto soup
+URL = 'https://news.google.com/topstories?hl=es-419&gl=US&ceid=US%3Aes-419'
 
 
-def get_content(url):
-    response = requests.get(url)
+if __name__ == '__main__':
+    response = requests.get(URL)
 
     if response.status_code == 200:
         content = response.text
 
         soup = BeautifulSoup(content, 'html.parser')
-        return soup
-    else:
-        return None
 
+        now = datetime.now().strftime('%d_%m_%Y')
 
-def get_species_pokemon(url):
-    soup = get_content(url)
+    with open(f'news/news_{now}.txt', 'w+') as file:
+        for element in soup.find_all('h3', class_='ipQwMb ekueJc RD0gLb', limit=20):
+            title = element.a.text
+            file.write(title + '\n')
 
-    table = soup.find(
-        'table', class_='vitals-table')
-
-    species = table.tbody.find_all('tr')[2].td.text
-
-    return species
-
-
-def show_pokemon_data():
-    soup = get_content(DOMAIN + URL)
-
-    soup = BeautifulSoup(content, 'html.parser')
-
-    table = soup.find('table', {'id': 'pokedex'})
-
-    for row in table.tbody.find_all('tr', limit=5):
-        columns = row.find_all('td', limit=3)  # limite de nodos a obtener
-
-        name = columns[1].a.text
-        type = [a.text for a in columns[2].find_all('a')]
-        link = DOMAIN + columns[1].a['href']
-
-        species = get_species_pokemon(link)
-
-        print(name, '|', *type, '|', species)
-
-
-if __name__ == '__main__':
-    soup = get_content(DOMAIN + URL)
-
-    table = soup.find('table', {'id': 'pokedex'})
-
-    for row in table.tbody.find_all('tr', limit=5):
-        columns = row.find_all('td', limit=3)  # limite de nodos a obtener
-
-        name = columns[1].a.text
-        type = [a.text for a in columns[2].find_all('a')]
-        link = DOMAIN + columns[1].a['href']
-
-        species = get_species_pokemon(link)
-
-        print(name, '|', *type, '|', species)
+    print('Archivo generado de forma exitosa')
