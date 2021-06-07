@@ -1,21 +1,24 @@
+import requests
 from bs4 import BeautifulSoup
 
+DOMAIN = 'https://pokemondb.net/'
+URL = '/pokedex/all'
+
 if __name__ == '__main__':
-    with open('econpy.html', 'r') as file:
-        content = file.read()
+    response = requests.get(DOMAIN + URL)
+    if response.status_code == 200:
+        content = response.text
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        div = soup.find('div', {'title': 'buyer-info'})
+        table = soup.find('table', {'id': 'pokedex'})
+        for row in table.tbody.find_all('tr'):
+            columns = row.find_all('td', limit=3)  # limite de nodos a obtener
+            
+            name = columns[1].a.text
+            type = [a.text for a in columns[2].find_all('a')] # * list comprehension
+            # print(*type) # * transforma el resultado(list) en un string
 
-        # div.contents = []
-        # a contents tambien se lo puede escribir.
+            link = DOMAIN + columns[1].a['href']
 
-        div.div.string = '' # elimina el texto busses carson
-
-        # * Se puede extraer un elemento 
-
-        span = div.span.extract()
-
-        print(div)
-        print(span)
+            print (link)
